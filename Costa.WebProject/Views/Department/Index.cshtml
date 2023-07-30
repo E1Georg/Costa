@@ -1,0 +1,84 @@
+﻿@using Costa.Application.Departments.Queries.GetDepartmentList;
+
+
+@{ ViewData["Title"] = "Структура предприятия - Главная"; }
+
+<h3>Структура предприятия</h3>
+
+<p><a asp-action="Create">Добавить отдел</a></p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Схема <br /> вложенности</th>
+            <th>Название</th>
+            <th>Код</th>               
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+@{
+            var listOfDepartments = Model as List<DepartmentLookupDto>;
+            int departmentCounter = 0;
+
+            foreach (var department in listOfDepartments.Where(i => i.ParentDepartmentID == null))
+            {
+                departmentCounter++;
+
+                <tr>
+                    <td>
+                        @Html.Raw(departmentCounter.ToString() + ".")
+                    </td>
+                    <td>
+                        <a asp-action="GetEmployees" asp-route-DepartmentID="@department.ID">@department.Name</a>
+                    </td>
+                    <td>
+                        @Html.Raw(department.Code)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@department.ID">Редактировать</a> |
+                        <a asp-action="Details" asp-route-id="@department.ID">Подробно</a> |
+                        <a asp-action="Delete" asp-route-id="@department.ID">Удалить</a>                       
+                    </td>               
+                </tr>
+
+                var childrenDepartments = listOfDepartments.Where(i => i.ParentDepartmentID == department.ID).ToList();
+                if (childrenDepartments.Count != 0)
+                    await PrintDepartmentStructure(childrenDepartments, (departmentCounter.ToString() + "."), listOfDepartments);
+            }            
+}
+    </tbody>
+</table>
+
+@{
+    async Task PrintDepartmentStructure(List<DepartmentLookupDto> listOfDepartments, string generalPointer, List<DepartmentLookupDto> allDepartments)
+    {
+        int currentCounter = 0;
+        foreach (var department in listOfDepartments)
+        {
+            currentCounter++;
+
+            <tr>
+                <td>
+                    @Html.Raw(generalPointer + currentCounter.ToString())
+                </td>
+                <td>
+                    <a asp-action="GetEmployees" asp-route-id="@department.ID">@department.Name</a>
+                </td>
+                <td>
+                    @Html.Raw(department.Code)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@department.ID">Редактировать</a> |
+                    <a asp-action="Details" asp-route-id="@department.ID">Подробно</a> |
+                    <a asp-action="Delete" asp-route-id="@department.ID">Удалить</a>                              
+                </td>
+            </tr>
+
+            var childrenDepartments = allDepartments.Where(i => i.ParentDepartmentID == department.ID).ToList();
+            if (childrenDepartments.Count != 0)
+                await PrintDepartmentStructure(childrenDepartments, (generalPointer + currentCounter.ToString() + "."), allDepartments);
+        }
+    }
+}

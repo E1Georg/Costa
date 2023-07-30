@@ -1,0 +1,56 @@
+﻿@model Costa.WebProject.Models.Department.UpdateDepartmentDto
+
+@{
+    ViewData["Title"] = "Редактирование информации об отделе";
+}
+
+<h3>Редактирование информации об отделе</h3>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Название отдела:</label>
+                <input asp-for="Name" class="form-control" value="@Model.Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Code" class="control-label">Код отдела:</label>
+                <input asp-for="Code" class="form-control" value="@Model.Code" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentDepartmentID_string" class="control-label">Родительское подразделение:</label>
+                <select asp-for="ParentDepartmentID_string" class="form-control" asp-items="@Model.Departments">
+                    <option>@Html.Raw(Model.Departments.Where(x => x.Value == Model.ParentDepartmentID.ToString()).DefaultIfEmpty(new SelectListItem { Value = "- Выберите отдел -", Text = "- Выберите отдел -" }).First().Text)</option>
+                </select>
+                <span asp-validation-for="ParentDepartmentID_string" class="text-danger"></span>
+            </div>
+            <hr />            
+            <div class="form-group">
+                <input asp-for="ID" class="form-control" type="hidden" value="@Model.ID" />              
+                <input asp-for="ParentDepartmentID" class="form-control" type="hidden" value="@Model.ParentDepartmentID" />
+                @if (Model.Departments != null)
+                    for (var i = 0; i < Model.Departments.Count; i++)
+                    {
+                        <input type="hidden" asp-for="@Model.Departments[i].Value" />
+                        <input type="hidden" asp-for="@Model.Departments[i].Text" />
+                    }
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Вернуться к структуре предприятия</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");        
+    }
+}

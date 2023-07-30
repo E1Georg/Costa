@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h3 class="display-4">Welcome</h3>    
+</div>
+
+<div class="text-center">
+    <ul style="list-style-type:none;">
+        <li>
+            @Html.ActionLink("Список сотрудников", "Index", "Employee")
+        </li>
+        <li>
+            @Html.ActionLink("Структура предприятия", "Index", "Department")
+        </li>
+    </ul>
+</div>

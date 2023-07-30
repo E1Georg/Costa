@@ -1,0 +1,80 @@
+﻿@model Costa.WebProject.Models.Employee.UpdateEmployeeDto
+
+@{
+    ViewData["Title"] = "Редактирование карточки сотрудника";
+}
+
+<h3>Редактирование карточки сотрудника</h3>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SurName" class="control-label">Фамилия:</label>
+                <input asp-for="SurName" class="form-control" value="@Model.SurName" />
+                <span asp-validation-for="SurName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label">Имя:</label>
+                <input asp-for="FirstName" class="form-control" value="@Model.FirstName" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Patronymic" class="control-label">Отчество:</label>
+                <input asp-for="Patronymic" class="form-control" value="@Model.Patronymic" />
+                <span asp-validation-for="Patronymic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label">Дата рождения:</label>
+                <input asp-for="DateOfBirth" class="form-control" type="date"/>
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DocSeries" class="control-label">Серия документа:</label>
+                <input asp-for="DocSeries" class="form-control" value="@Model.DocSeries" />
+                <span asp-validation-for="DocSeries" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DocNumber" class="control-label">Номер документа:</label>
+                <input asp-for="DocNumber" class="form-control" value="@Model.DocNumber" />
+                <span asp-validation-for="DocNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Position" class="control-label">Должность:</label>
+                <input asp-for="Position" class="form-control" value="@Model.Position" />
+                <span asp-validation-for="Position" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentDepartmentID_string" class="control-label">Подразделение:</label>
+                <select asp-for="ParentDepartmentID_string" class="form-control" asp-items="@Model.Departments">
+                    <option>@Html.Raw(Model.Departments.Where(x => x.Value == Model.DepartmentID.ToString()).DefaultIfEmpty(new SelectListItem { Value = "- Выберите отдел -", Text = "- Выберите отдел -" }).First().Text)</option>
+                </select>
+                <span asp-validation-for="ParentDepartmentID_string" class="text-danger"></span>
+            </div>         
+            <hr />
+            <div class="form-group">
+                <input asp-for="ID" class="form-control" type="hidden" value="@Model.ID" />
+                @if (Model.Departments != null)
+                    for (var i = 0; i < Model.Departments.Count; i++)
+                    {
+                        <input type="hidden" asp-for="@Model.Departments[i].Value" />
+                        <input type="hidden" asp-for="@Model.Departments[i].Text" />
+                    }
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Вернуться к списку сотрудников</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

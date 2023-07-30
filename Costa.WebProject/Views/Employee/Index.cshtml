@@ -1,0 +1,56 @@
+﻿@using Costa.Application.Employees.Queries.GetEmployeeList;
+@{ ViewData["Title"] = "Список сотрудников - Главная"; }
+
+<h3>Список сотрудников</h3>
+
+<p><a asp-action="Create">Добавить карточку сотрудника</a></p>
+
+<style type="text/css">
+    .table th, .table td {
+        text-align: center;
+    }
+</style>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Порядковый номер</th>
+            <th>ФИО</th>
+            <th>Возраст</th>
+            <th>Должность</th>
+            <th>Отдел</th>       
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+@{   
+    int counter = 0;
+    foreach (var item in Model as List<EmployeeLookupDto>) {
+        counter++;
+        <tr>
+            <td>
+                @Html.Raw(counter.ToString())
+            </td>
+            <td>
+                @Html.Raw(string.Concat(item.SurName, " ", item.FirstName, " ", item.Patronymic))
+            </td>
+             <td>
+                @Html.Raw(item.Age)
+            </td>
+            <td>
+                @Html.Raw(item.Position)
+            </td>
+            <td>
+                @Html.Raw(item.DepartmentName)
+            </td>
+            <td>         
+                <a asp-action="Edit" asp-route-id="@item.ID">Редактировать</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Подробно</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Удалить</a>
+            </td>
+        </tr>
+    }
+}
+    </tbody>
+</table>

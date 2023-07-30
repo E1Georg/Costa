@@ -1,0 +1,63 @@
+﻿@model Costa.Application.Employees.Queries.GetEmployeeDetails.EmployeeDetailsVm
+﻿
+@{ ViewData["Title"] = "Удаление карточки"; }
+
+<h3>Вы действительно хотите удалить карточку сотрудника?</h3>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Идентификатор сотрудника:</dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ID)
+        </dd>
+
+        <dt class="col-sm-2">Фамилия:</dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SurName)
+        </dd>
+
+        <dt class = "col-sm-2">Имя:</dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt class="col-sm-2">Отчество:</dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Patronymic)
+        </dd>
+
+        <dt class="col-sm-2">Дата рождения</dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+
+        <dt class="col-sm-2">Возраст</dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Age)
+        </dd>
+
+        <dt class="col-sm-2">Серия документа:</dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DocSeries)
+        </dd>
+
+        <dt class = "col-sm-2">Номер документа:</dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DocNumber)
+        </dd>
+
+        <dt class = "col-sm-2">Должность:</dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DepartmentName)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete" method="post" asp-route-ID="@Model.ID">
+        <div class="form-group">
+            <input type="hidden" asp-for="ID" />
+            <input type="submit" value="Удалить" class="btn btn-danger" /> |
+            <a asp-action="Index">Вернуться к списку сотрудников</a>
+        </div>
+    </form>
+</div>
